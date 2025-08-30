@@ -75,6 +75,8 @@ jobs:
             **/.env.test
             **/.env.example
           key: ${{ runner.os }}-node-npm-${{ hashFiles('**/package-lock.json', '**/.env.test', '**/.env.example') }}
+          restore-keys: |
+            ${{ runner.os }}-node-npm-
       - run: npm ci
       - name: Get build result artifact
         uses: actions/download-artifact@v4
