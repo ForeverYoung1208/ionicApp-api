@@ -1,0 +1,55 @@
+version: '3.8'
+
+services:
+  api:
+    container_name: ionicapp_api
+    depends_on:
+      - postgres
+    build:  
+      context: docker/api
+      dockerfile: ./Dockerfile
+    user: "node"
+    tty: true
+    volumes:
+      - ./:/app
+    ports:
+      - ${PORT}:3000
+      - ${DEBUG_PORT}:9229
+    command: >
+      bash -c "npm ci
+      && rm -rf dist
+      && npm run start:debug"
+
+  postgres:
+    container_name: ionicapp_postgres
+    build:
+      dockerfile: docker/postgres/Dockerfile
+    environment:
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_DATABASE}
+    ports:
+      - ${DB_PORT}:5432
+    volumes:
+      - ./docker/postgres/data:/var/lib/postgresql/data
+
+  postgres_tests:
+    container_name: ionicapp_postgres_test      
+    build:
+      dockerfile: docker/postgres/Dockerfile
+    volumes:
+      - ./docker/postgres/data_tests:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: username_test
+      POSTGRES_PASSWORD: secret_test
+      POSTGRES_DB: ionicapp_test
+    ports:
+      - 54321:5432
+
+  redis:
+    container_name: ionicapp_redis
+    image: redis:alpine
+    ports:
+      - ${REDIS_PORT}:6379
+    volumes:
+      - ./docker/redis/data:/data
