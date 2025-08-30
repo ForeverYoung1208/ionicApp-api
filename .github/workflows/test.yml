@@ -52,7 +52,7 @@ jobs:
       - name: Run unit tests
         run: npm run test:unit
 
-  test-api-int:
+  test-api-int-e2e:
     runs-on: ubuntu-latest
     needs: build
     steps:
@@ -81,5 +81,7 @@ jobs:
       - run: cp .env.test-ci .env.test -f
       - name: Run migrations
         run: npm run migration:test:run
-      - name: Run ingegration tests
+      - name: Run ingegration and e2e tests
         run: npm run test:int
+      - name: Run e2e tests
+        run: npm run test:e2e
