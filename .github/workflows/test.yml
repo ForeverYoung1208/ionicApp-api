@@ -23,7 +23,7 @@ jobs:
             **/node_modules
             **/.env.test
             **/.env.example
-          key: ${{ runner.os }}-node-npm-${{ hashFiles('**/package-lock.json', '**/.env.test', '**/.env.example') }}
+          key: ${{ runner.os }}-node-npm-${{ hashFiles('./package-lock.json', './.env.test', './.env.example') }}
           restore-keys: |
             ${{ runner.os }}-node-npm-
       - name: Install deps
@@ -50,7 +50,7 @@ jobs:
             **/node_modules
             **/.env.test
             **/.env.example
-          key: ${{ runner.os }}-node-npm-${{ hashFiles('**/package-lock.json', '**/.env.test', '**/.env.example') }}
+          key: ${{ runner.os }}-node-npm-${{ hashFiles('./package-lock.json', './.env.test', './.env.example') }}
       - name: Run unit tests
         run: npm run test:unit
 
@@ -69,7 +69,7 @@ jobs:
             **/node_modules
             **/.env.test
             **/.env.example
-          key: ${{ runner.os }}-node-npm-${{ hashFiles('**/package-lock.json', '**/.env.test', '**/.env.example') }}
+          key: ${{ runner.os }}-node-npm-${{ hashFiles('./package-lock.json', './.env.test', './.env.example') }}
       - uses: isbang/compose-action@v1.5.1
         with:
           compose-file: "docker-compose.yml"
