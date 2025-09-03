@@ -10,9 +10,9 @@ const projectName = projectShortName + suffix;
 // define your registered domain (you must have one at Route53)
 const domainName = 'for-test.click';
 
-// subdomain for api (will be created)
-const subDomainNameApi = `api.${projectName}`;
-const fullSubDomainNameApi = `${subDomainNameApi}.${domainName}`;
+// subdomain for app (will be created, and route .../api will be used to serve api )
+const subDomainNameApp = `${projectName}`;
+const fullSubDomainNameApp = `${subDomainNameApp}.${domainName}`;
 
 // user for deployment using CI/CD (will be created)
 const userDeploerName = `${projectName}-deployer`;
@@ -32,8 +32,8 @@ export const config: IAppStackConfig = {
   databaseName,
   domainName,
   projectName,
-  subDomainNameApi,
-  fullSubDomainNameApi,
+  subDomainNameApp,
+  fullSubDomainNameApp,
   userDeploerName,
   databaseUsername,
   targetNodeEnv,
