@@ -75,7 +75,7 @@ jobs:
               "sudo -u ec2-user /usr/local/bin/docker-compose up -d --build",
               "sleep 15",      
               "sudo -u ec2-user /usr/local/bin/docker-compose exec -T api npm run migration:run"
-            ]' /
+            ]' \
             --region "$REGION" \
             --query "Command.CommandId" \
             --output text > command_id.txt
