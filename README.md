@@ -69,3 +69,22 @@ echo $INSTANCE_IP
 ```bash
 ssh -i ~/.ssh/simplenestjs-dev-key.pem ec2-user@$INSTANCE_IP
 ```
+
+# CI/CD on GitHub
+
+## 1. add sectrets
+
+gather these secrets from your aws console (create access key for user ionicapp-userdeployer)
+
+AWS_ACCESS_KEY_ID=... (access key form console)
+AWS_SECRET_ACCESS_KEY=... (secret key form console)
+
+## 2. add variables
+
+gather these variables from cdk output or aws cli
+
+CODE_BUCKET=... (cdk output: ionicapp-devStack.CodeBucketName)
+EC2_INSTANCE_ID=... (cdk output: ionicapp-devStack.InstanceId)
+AWS_REGION=... (aws cli command: aws configure get region)
+
+
