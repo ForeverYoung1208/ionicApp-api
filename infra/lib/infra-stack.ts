@@ -426,6 +426,7 @@ export class InfraStack extends cdk.Stack {
               'ssm:SendCommand',
               'ssm:ListCommandInvocations',
               'ssm:ListCommands',
+              'ssm:GetCommandInvocation',
             ],
             resources: ['*'],
           }),
