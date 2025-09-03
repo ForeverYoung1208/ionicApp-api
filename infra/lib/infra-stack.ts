@@ -282,7 +282,7 @@ export class InfraStack extends cdk.Stack {
       `echo "BCRYPT_SALT_ROUNDS=8" >> .env`,
 
       // Start Docker Compose
-      'sudo -u ec2-user /usr/local/bin/docker-compose up -d',
+      'sudo -u ec2-user /usr/local/bin/docker-compose up api postgres redis -d',
 
       // Wait for services to start, then run migrations
       'sleep 30',
