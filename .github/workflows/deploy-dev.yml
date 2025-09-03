@@ -71,8 +71,8 @@ jobs:
               "cd /var/www/app",
               "aws s3 cp s3://'"$CODE_BUCKET"'/'"$FILE_NAME"' app.zip --region '"$REGION"'",
               "unzip -o app.zip,
-              "chown -R ec2-user:ec2-user /var/www/app",   #//??
-              "sudo -u ec2-user /usr/local/bin/docker-compose up -d --build", #//??
+              "chown -R ec2-user:ec2-user /var/www/app",
+              "sudo -u ec2-user /usr/local/bin/docker-compose up -d --build",
               "sleep 15",      
               "sudo -u ec2-user /usr/local/bin/docker-compose exec -T api npm run migration:run"
             ]' /
@@ -95,8 +95,3 @@ jobs:
             --details --region "$REGION" \
             --query "CommandInvocations[0].CommandPlugins[0].Output" \
             --output text | tail -n 100 || true
-          
-
-
-
-
