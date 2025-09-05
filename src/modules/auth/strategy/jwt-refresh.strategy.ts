@@ -23,6 +23,6 @@ export class JwtRefreshStrategy extends PassportStrategy(
   }
 
   validate(req: Request, payload: JwtPayload): JwtUserPayloadDto {
-    return { _id: payload.sub };
+    return { id: payload.sub };
   }
 }
