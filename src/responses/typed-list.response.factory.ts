@@ -8,12 +8,12 @@ export function TypedListResponseFactory<T>(ListClass: Constructor<T>) {
   class TypedList implements IListResponse<T> {
     @Expose()
     @ApiProperty({ example: 1 })
-    total: number;
+    total!: number;
 
     @Expose()
     @Type(() => ListClass)
     @ApiProperty({ type: ListClass, isArray: true })
-    data: T[];
+    data!: T[];
   }
   return TypedList;
 }

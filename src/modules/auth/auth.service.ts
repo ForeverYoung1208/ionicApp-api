@@ -112,7 +112,7 @@ export class AuthService {
         expiresIn,
       });
     } catch (e) {
-      throw new AccessTokenGenerationException(e.message);
+      throw new AccessTokenGenerationException(JSON.stringify(e));
     }
   }
 
