@@ -10,26 +10,26 @@ export class User {
     unique: true,
     generated: 'uuid',
   })
-  id: string;
+  id!: string;
 
   @Column({
     type: 'varchar',
     length: 255,
     nullable: false,
   })
-  password: string;
+  password!: string;
 
   @Column({
     type: 'varchar',
     length: 255,
     nullable: false,
   })
-  name: string;
+  name!: string;
 
   @Column({
     type: 'varchar',
     length: 255,
     nullable: false,
   })
-  email: string;
+  email!: string;
 }

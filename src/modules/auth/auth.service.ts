@@ -12,6 +12,7 @@ import {
   AccessForbiddenException,
   AccessTokenGenerationException,
 } from '../../exceptions/access-exceptions';
+import { checkPassword } from '../../helpers/system';
 
 @Injectable()
 export class AuthService {
@@ -27,33 +28,24 @@ export class AuthService {
     return this.jwtService.signAsync(payload, options);
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  async validateUser(email: string, _password: string): Promise<User> {
+  async validateUser(email: string, password: string): Promise<User> {
     const user: User | null = await this.usersRepository.findOneBy({
       email,
     });
-
     if (!user) {
       throw new AccessForbiddenException('Invalid login or password');
     }
-
-    // use mocked (simplified) auth - allow all users regardles of password
-    // TODO: remove this after real auth implementation
-
-    // const passwordIsValid = await this.hashService.compareHashed(
-    //   password,
-    //   user.password,
-    // );
-    // if (!passwordIsValid) {
-    //   throw new AccessForbiddenException('Invalid login or password');
-    // }
+    const passwordIsValid = await checkPassword(password, user.password);
+    if (!passwordIsValid) {
+      throw new AccessForbiddenException('Invalid login or password');
+    }
 
     return user;
   }
 
   async signin(payloadUser: JwtUserPayloadDto): Promise<ResponseTokenDto> {
     const dbUser: User | null = await this.usersRepository.findOneBy({
-      id: payloadUser._id,
+      id: payloadUser.id,
     });
 
     if (!dbUser) {
@@ -67,11 +59,11 @@ export class AuthService {
     userPayload: JwtUserPayloadDto,
   ): Promise<ResponseTokenDto> {
     const accessToken = await this.generateAccessToken({
-      sub: userPayload._id,
+      sub: userPayload.id,
     });
 
     const refreshToken = await this.generateRefreshToken({
-      sub: userPayload._id,
+      sub: userPayload.id,
     });
 
     return { accessToken, refreshToken };
@@ -112,13 +104,13 @@ export class AuthService {
         expiresIn,
       });
     } catch (e) {
-      throw new AccessTokenGenerationException(e.message);
+      throw new AccessTokenGenerationException((e as Error)?.message);
     }
   }
 
   async refresh(payloadUser: JwtUserPayloadDto): Promise<ResponseTokenDto> {
     const dbUser: User | null = await this.usersRepository.findOneBy({
-      id: payloadUser._id,
+      id: payloadUser.id,
     });
 
     if (!dbUser) {
@@ -126,7 +118,7 @@ export class AuthService {
     }
 
     const updatedPayload: JwtUserPayloadDto = {
-      _id: String(dbUser.id),
+      id: String(dbUser.id),
     };
 
     return this.generateTokens(updatedPayload);

@@ -3,6 +3,7 @@ version: '3.8'
 services:
   api:
     container_name: ionicapp_api
+    restart: unless-stopped
     depends_on:
       - postgres
     build:  
@@ -22,6 +23,7 @@ services:
 
   postgres:
     container_name: ionicapp_postgres
+    restart: unless-stopped
     build:
       dockerfile: docker/postgres/Dockerfile
     environment:
@@ -48,6 +50,7 @@ services:
 
   redis:
     container_name: ionicapp_redis
+    restart: unless-stopped
     image: redis:alpine
     ports:
       - ${REDIS_PORT}:6379

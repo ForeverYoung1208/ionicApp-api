@@ -5,3 +5,10 @@ export const encodePassword = async (passwordRaw: string): Promise<string> => {
   const salt = await bcrypt.genSalt(Number(b));
   return await bcrypt.hash(passwordRaw, salt);
 };
+
+export const checkPassword = async (
+  password: string,
+  hashedPassword: string,
+): Promise<boolean> => {
+  return bcrypt.compare(password, hashedPassword);
+};

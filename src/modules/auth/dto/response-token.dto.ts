@@ -6,10 +6,10 @@ export class ResponseTokenDto {
   @ApiProperty()
   @IsString()
   @Expose()
-  accessToken: string;
+  accessToken!: string;
 
   @ApiProperty()
   @IsString()
   @Expose()
-  refreshToken: string;
+  refreshToken!: string;
 }

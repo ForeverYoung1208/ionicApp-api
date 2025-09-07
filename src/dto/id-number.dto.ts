@@ -8,5 +8,5 @@ export class IdNumberDto {
   @IsPositive()
   @Expose()
   @ApiProperty({ example: 1 })
-  id: number;
+  id!: number;
 }

@@ -16,6 +16,7 @@ async function bootstrap(): Promise<void> {
   const corsOrigins = configService.get<string>('SITE_ORIGIN');
   const corsOriginsArray = corsOrigins?.split(',').filter(Boolean) ?? [];
 
+  app.setGlobalPrefix('api');
   app.useGlobalPipes(new ValidationPipe(validationPipeConfig));
 
   app.enableShutdownHooks();
@@ -33,7 +34,7 @@ async function bootstrap(): Promise<void> {
       .addBearerAuth()
       .build();
     const document = SwaggerModule.createDocument(app, swaggerConfig);
-    SwaggerModule.setup('api/docs', app, document, {
+    SwaggerModule.setup('docs', app, document, {
       swaggerOptions: { persistAuthorization: true },
     });
   }
