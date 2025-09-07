@@ -83,9 +83,3 @@ jobs:
 
           COMMAND_ID=$(cat command_id.txt)
           echo "SSM CommandId: $COMMAND_ID"
-
-          # Optionally wait for completion
-          aws ssm wait command-executed \
-            --command-id "$COMMAND_ID" \
-            --instance-id "$EC2_INSTANCE_ID" \
-            --region "$REGION"
