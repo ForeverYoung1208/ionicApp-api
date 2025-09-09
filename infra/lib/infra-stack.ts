@@ -499,5 +499,10 @@ export class InfraStack extends cdk.Stack {
       value: frontendBucket.bucketName,
       description: 'S3 bucket for frontend deployment',
     });
+
+    new cdk.CfnOutput(this, 'CloudFrontDistributionId', {
+      value: distribution.distributionId,
+      description: 'CloudFront distribution ID',
+    });
   }
 }

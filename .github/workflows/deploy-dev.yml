@@ -49,12 +49,12 @@ jobs:
 
       - if: ${{ steps.cache-api.outputs.cache-hit != 'true' }}
         name: Zip application
-        run: zip -r app.zip . -x ".git/*" ".github/*" "infra/" "docker/" "test/"
+        run: zip -r app.zip . -x ".git/*" ".github/*" "infra/*" "docker/*" "test/*"
 
       - if: ${{ steps.cache-api.outputs.cache-hit != 'true' }}
         name: Upload to S3
         run: |
-          FILE_NAME="app-${{ github.sha }}.zip"
+          FILE_NAME="app-$(date +%Y-%m-%d_%H:%M)-${{ github.sha }}.zip"
           aws s3 cp app.zip s3://$CODE_BUCKET/$FILE_NAME
           echo "FILE_NAME=$FILE_NAME" >> $GITHUB_ENV
 
