@@ -419,6 +419,16 @@ export class InfraStack extends cdk.Stack {
             resources: [codeBucket.bucketArn, `${codeBucket.bucketArn}/*`],
           }),
 
+          // Allow publishing frontend artifacts to the dedicated frontend bucket
+          new iam.PolicyStatement({
+            effect: iam.Effect.ALLOW,
+            actions: ['s3:*'],
+            resources: [
+              frontendBucket.bucketArn,
+              `${frontendBucket.bucketArn}/*`,
+            ],
+          }),
+
           // Allow triggering SSM RunCommand to restart docker on the instance
           new iam.PolicyStatement({
             effect: iam.Effect.ALLOW,
@@ -442,6 +452,13 @@ export class InfraStack extends cdk.Stack {
           new iam.PolicyStatement({
             effect: iam.Effect.ALLOW,
             actions: ['logs:*'],
+            resources: ['*'],
+          }),
+
+          // CloudFront permissions
+          new iam.PolicyStatement({
+            effect: iam.Effect.ALLOW,
+            actions: ['cloudfront:CreateInvalidation'],
             resources: ['*'],
           }),
         ],
@@ -481,6 +498,11 @@ export class InfraStack extends cdk.Stack {
     new cdk.CfnOutput(this, 'FrontendBucketName', {
       value: frontendBucket.bucketName,
       description: 'S3 bucket for frontend deployment',
+    });
+
+    new cdk.CfnOutput(this, 'CloudFrontDistributionId', {
+      value: distribution.distributionId,
+      description: 'CloudFront distribution ID',
     });
   }
 }
