@@ -49,7 +49,7 @@ jobs:
 
       - if: ${{ steps.cache-api.outputs.cache-hit != 'true' }}
         name: Zip application
-        run: zip -r app.zip . -x ".git/*" ".github/*" "infra/*" "docker/*" "test/*"
+        run: zip -r app.zip . -x ".git/*" ".github/*" "infra/*" "docker/*" "test/*" --quiet
 
       - if: ${{ steps.cache-api.outputs.cache-hit != 'true' }}
         name: Upload to S3
@@ -61,7 +61,7 @@ jobs:
       - if: ${{ steps.cache-api.outputs.cache-hit != 'true' }}
         name: Update EC2 from S3 and restart docker-compose
         run: |
-          # Send SSM command to sync code, rebuild, restart, and run migrations
+          # Send SSM command to download code and build artifact, restart docker-compose, and run migrations
           aws ssm send-command \
             --document-name "AWS-RunShellScript" \
             --targets "Key=instanceids,Values=$EC2_INSTANCE_ID" \
@@ -70,9 +70,9 @@ jobs:
               "set -e",
               "cd /var/www/app",
               "aws s3 cp s3://'"$CODE_BUCKET"'/'"$FILE_NAME"' app.zip --region '"$REGION"'",
-              "sudo -u ec2-user unzip -o app.zip",
+              "sudo -u ec2-user unzip -qo app.zip",
               "sleep 15",
-              "sudo -u ec2-user /usr/local/bin/docker-compose -f docker-compose-dev.yml restart api-run postgres redis -d",
+              "sudo -u ec2-user /usr/local/bin/docker-compose -f docker-compose-dev.yml restart api-run postgres redis",
               "sleep 15",
               "sudo -u ec2-user /usr/local/bin/docker-compose -f docker-compose-dev.yml exec -T api-run npm run migration:run"
             ]' \
