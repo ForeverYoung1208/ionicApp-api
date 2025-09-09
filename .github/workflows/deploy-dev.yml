@@ -71,10 +71,10 @@ jobs:
               "cd /var/www/app",
               "aws s3 cp s3://'"$CODE_BUCKET"'/'"$FILE_NAME"' app.zip --region '"$REGION"'",
               "sudo -u ec2-user unzip -o app.zip",
-              "sleep 10",
-              "sudo -u ec2-user /usr/local/bin/docker-compose up api-run postgres redis -d --build",
-              "sleep 10",
-              "sudo -u ec2-user /usr/local/bin/docker-compose exec -T api-run npm run migration:run"
+              "sleep 15",
+              "sudo -u ec2-user /usr/local/bin/docker-compose -f docker-compose-dev.yml restart api-run postgres redis -d",
+              "sleep 15",
+              "sudo -u ec2-user /usr/local/bin/docker-compose -f docker-compose-dev.yml exec -T api-run npm run migration:run"
             ]' \
             --region "$REGION" \
             --query "Command.CommandId" \

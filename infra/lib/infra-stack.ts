@@ -281,8 +281,11 @@ export class InfraStack extends cdk.Stack {
       `echo "JWT_REFRESH_SECRET_KEY=$JWT_REFRESH_SECRET_KEY" >> .env`,
       `echo "BCRYPT_SALT_ROUNDS=8" >> .env`,
 
-      // Start Docker Compose
-      'sudo -u ec2-user /usr/local/bin/docker-compose up api-run postgres redis -d',
+      // Build app
+      'sudo -u ec2-user /usr/local/bin/docker-compose -f docker-compose-dev.yml up api-build',
+
+      // Start services
+      'sudo -u ec2-user /usr/local/bin/docker-compose -f docker-compose-dev.yml up api-run postgres redis -d',
 
       // Wait for services to start, then run migrations
       'sleep 30',
