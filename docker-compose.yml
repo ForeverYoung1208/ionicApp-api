@@ -3,7 +3,6 @@ version: '3.8'
 services:
   api:
     container_name: ionicapp_api
-    restart: unless-stopped
     depends_on:
       - postgres
     build:  
@@ -20,6 +19,24 @@ services:
       bash -c "npm ci
       && rm -rf dist
       && npm run start:debug"
+
+  api-run:
+    container_name: ionicapp_api_run
+    restart: unless-stopped
+    depends_on:
+      - postgres
+      - redis
+    build:  
+      context: docker/api
+      dockerfile: ./Dockerfile
+    user: "node"
+    tty: true
+    volumes:
+      - ./:/app
+    ports:
+      - ${PORT}:3000
+      - ${DEBUG_PORT}:9229
+    command: ["npm", "run", "start:prod"]
 
   postgres:
     container_name: ionicapp_postgres

@@ -282,11 +282,11 @@ export class InfraStack extends cdk.Stack {
       `echo "BCRYPT_SALT_ROUNDS=8" >> .env`,
 
       // Start Docker Compose
-      'sudo -u ec2-user /usr/local/bin/docker-compose up api postgres redis -d',
+      'sudo -u ec2-user /usr/local/bin/docker-compose up api-run postgres redis -d',
 
       // Wait for services to start, then run migrations
       'sleep 30',
-      'sudo -u ec2-user /usr/local/bin/docker-compose exec -T api npm run migration:run',
+      'sudo -u ec2-user /usr/local/bin/docker-compose exec -T api-run npm run migration:run',
     );
 
     const keyPair = new ec2.CfnKeyPair(this, `${projectName}KeyPair`, {
