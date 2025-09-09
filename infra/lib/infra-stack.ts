@@ -359,6 +359,7 @@ export class InfraStack extends cdk.Stack {
               httpPort: 3000,
               protocolPolicy: cloudfront.OriginProtocolPolicy.HTTP_ONLY,
             }),
+            originRequestPolicy: cloudfront.OriginRequestPolicy.ALL_VIEWER,
             viewerProtocolPolicy:
               cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
             allowedMethods: cloudfront.AllowedMethods.ALLOW_ALL,
